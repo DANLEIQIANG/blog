@@ -1,15 +1,18 @@
-/*
 package com.qdl.blog.util;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Created by limi on 2017/10/15.
+ */
 public class MD5Utils {
+
     /**
      * MD5加密类
      * @param str 要加密的字符串
      * @return    加密后的字符串
      */
-/*
     public static String code(String str){
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -33,16 +36,11 @@ public class MD5Utils {
             e.printStackTrace();
             return null;
         }
+
     }
 
-    /**
-     * 测试方法
-     * @param args
-     */
-/*
+
     public static void main(String[] args) {
-        System.out.println(code("123456"));
+        System.out.println(code("111111"));
     }
 }
-
-*/
