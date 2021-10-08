@@ -1,10 +1,7 @@
 package com.qdl.blog.web.admin;
 
-
 import com.qdl.blog.po.Tag;
-
 import com.qdl.blog.service.TagService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,76 +17,78 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+
+
 @Controller
 @RequestMapping("/admin")
 public class TagController {
+
     @Autowired
     private TagService tagService;
 
-    @GetMapping("/tags")   //分页查询
-    public String tags(@PageableDefault(size=10,sort={"id"},direction = Sort.Direction.DESC) Pageable pageable, Model model){
+    @GetMapping("/tags")
+    public String tags(@PageableDefault(size = 10,sort = {"id"},direction = Sort.Direction.DESC)
+                               Pageable pageable, Model model) {
         model.addAttribute("page",tagService.listTag(pageable));
-
         return "admin/tags";
     }
 
     @GetMapping("/tags/input")
-    public String addinput(Model model){
-        model.addAttribute("tag",new Tag());
-
+    public String input(Model model) {
+        model.addAttribute("tag", new Tag());
         return "admin/tags-input";
     }
 
     @GetMapping("/tags/{id}/input")
-    public String editInput(@PathVariable Long id, Model model){
-        model.addAttribute("tag",tagService.getTag(id));
+    public String editInput(@PathVariable Long id, Model model) {
+        model.addAttribute("tag", tagService.getTag(id));
         return "admin/tags-input";
     }
 
 
     @PostMapping("/tags")
-    public String post(@Valid Tag tag, BindingResult result, RedirectAttributes attributes){
-        Tag tag1=tagService.getTagByName(tag.getName());
-        if(tag1!=null){
-            result.rejectValue("name","nameError","不能重复添加分类");
+    public String post(@Valid Tag tag,BindingResult result, RedirectAttributes attributes) {
+        Tag tag1 = tagService.getTagByName(tag.getName());
+        if (tag1 != null) {
+            result.rejectValue("name","nameError","不能添加重复的分类");
         }
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return "admin/tags-input";
         }
-        Tag t=tagService.saveTag(tag);
-        if(t==null){
-            attributes.addFlashAttribute("message","新增失败");
-        }else{
-            attributes.addFlashAttribute("message","新增成功");
+        Tag t = tagService.saveTag(tag);
+        if (t == null ) {
+            attributes.addFlashAttribute("message", "新增失败");
+        } else {
+            attributes.addFlashAttribute("message", "新增成功");
         }
         return "redirect:/admin/tags";
-
     }
 
+
     @PostMapping("/tags/{id}")
-    public String editPost(@Valid Tag tag, BindingResult result,@PathVariable Long id,RedirectAttributes attributes){  //检查更新后是否有重复
-        Tag tag1=tagService.getTagByName(tag.getName());
-        if(tag1!=null){
-            result.rejectValue("name","nameError","不能重复添加分类");
+    public String editPost(@Valid Tag tag, BindingResult result,@PathVariable Long id, RedirectAttributes attributes) {
+        Tag tag1 = tagService.getTagByName(tag.getName());
+        if (tag1 != null) {
+            result.rejectValue("name","nameError","不能添加重复的分类");
         }
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return "admin/tags-input";
         }
-        Tag t=tagService.updateTag(id,tag);
-        if(t==null){
-            attributes.addFlashAttribute("message","更新失败");
-        }else{
-            attributes.addFlashAttribute("message","更新成功");
+        Tag t = tagService.updateTag(id,tag);
+        if (t == null ) {
+            attributes.addFlashAttribute("message", "更新失败");
+        } else {
+            attributes.addFlashAttribute("message", "更新成功");
         }
         return "redirect:/admin/tags";
-
     }
 
     @GetMapping("/tags/{id}/delete")
-    public String delete(@PathVariable Long id,RedirectAttributes attributes){
+    public String delete(@PathVariable Long id,RedirectAttributes attributes) {
         tagService.deleteTag(id);
-        attributes.addFlashAttribute("message","删除成功");
+        attributes.addFlashAttribute("message", "删除成功");
         return "redirect:/admin/tags";
     }
+
 
 }

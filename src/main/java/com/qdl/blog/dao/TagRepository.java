@@ -1,6 +1,7 @@
 package com.qdl.blog.dao;
 
 import com.qdl.blog.po.Tag;
+import com.qdl.blog.po.Type;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

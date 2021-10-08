@@ -14,8 +14,9 @@ logging:
     root: warn
     com.lrm: info
   file: log/blog-pro.log
-server:
-  port: 8081
+
+
+
 
 
 

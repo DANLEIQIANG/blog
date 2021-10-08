@@ -5,44 +5,59 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 @Entity
-@Table(name="t_blog")
+@Table(name = "t_blog")
 public class Blog {
+
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
-    private String  title;
-    private  String content;
+    private String title;
+
+    @Basic(fetch = FetchType.LAZY)
+    @Lob
+    private String content;
     private String firstPicture;
     private String flag;
     private Integer views;
     private boolean appreciation;
     private boolean shareStatement;
     private boolean commentabled;
+    private boolean published;
     private boolean recommend;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
+
     @ManyToOne
     private Type type;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST})  //级连新增
-    private List<Tag> tags=new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    private List<Tag> tags = new ArrayList<>();
+
+
     @ManyToOne
     private User user;
+
     @OneToMany(mappedBy = "blog")
-    private List<Comment>  comments=new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
+
+    @Transient
+    private String tagIds;
+
+    private String description;
 
     public Blog() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -110,6 +125,14 @@ public class Blog {
         this.commentabled = commentabled;
     }
 
+    public boolean isPublished() {
+        return published;
+    }
+
+    public void setPublished(boolean published) {
+        this.published = published;
+    }
+
     public boolean isRecommend() {
         return recommend;
     }
@@ -150,6 +173,7 @@ public class Blog {
         this.tags = tags;
     }
 
+
     public User getUser() {
         return user;
     }
@@ -157,6 +181,7 @@ public class Blog {
     public void setUser(User user) {
         this.user = user;
     }
+
 
     public List<Comment> getComments() {
         return comments;
@@ -166,9 +191,50 @@ public class Blog {
         this.comments = comments;
     }
 
+
+    public String getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(String tagIds) {
+        this.tagIds = tagIds;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void init() {
+        this.tagIds = tagsToIds(this.getTags());
+    }
+
+    //1,2,3
+    private String tagsToIds(List<Tag> tags) {
+        if (!tags.isEmpty()) {
+            StringBuffer ids = new StringBuffer();
+            boolean flag = false;
+            for (Tag tag : tags) {
+                if (flag) {
+                    ids.append(",");
+                } else {
+                    flag = true;
+                }
+                ids.append(tag.getId());
+            }
+            return ids.toString();
+        } else {
+            return tagIds;
+        }
+    }
+
+
     @Override
     public String toString() {
-        return "blog{" +
+        return "Blog{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
@@ -178,9 +244,16 @@ public class Blog {
                 ", appreciation=" + appreciation +
                 ", shareStatement=" + shareStatement +
                 ", commentabled=" + commentabled +
+                ", published=" + published +
                 ", recommend=" + recommend +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", type=" + type +
+                ", tags=" + tags +
+                ", user=" + user +
+                ", comments=" + comments +
+                ", tagIds='" + tagIds + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

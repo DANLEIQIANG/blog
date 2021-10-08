@@ -1,3 +1,4 @@
+/*
 package com.qdl.blog.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -8,6 +9,7 @@ public class MD5Utils {
      * @param str 要加密的字符串
      * @return    加密后的字符串
      */
+/*
     public static String code(String str){
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -37,7 +39,10 @@ public class MD5Utils {
      * 测试方法
      * @param args
      */
+/*
     public static void main(String[] args) {
         System.out.println(code("123456"));
     }
 }
+
+*/

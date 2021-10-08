@@ -1,11 +1,15 @@
 package com.qdl.blog.vo;
 
+/**
+ * Created by limi on 2017/10/20.
+ */
 public class BlogQuery {
+
     private String title;
     private Long typeId;
     private boolean recommend;
 
-    public BlogQuery(){
+    public BlogQuery() {
     }
 
     public String getTitle() {
